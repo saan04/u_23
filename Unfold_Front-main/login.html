@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Website</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1>REDGIFT</h1>
+        <nav>
+            <ul>
+                <li><a class="nav-button" href="#">About Us</a></li>
+                <li><a class="nav-button" href="index.html">Go Back</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="metam">
+    <h3>Connect Your MetaMask Wallet Here!</h3>
+    <a href="landing.html"><button id='connectWallet' onclick="">Connect Wallet</button></a>
+</div>
+
+<script type="text/javascript">
+    window.userWalletAddress = null
+      const connectWallet = document.getElementById('connectWallet')
+      const walletAddress = document.getElementById('walletAddress')
+      const walletBalance = document.getElementById('walletBalance')
+
+
+      function checkInstalled() {
+        if (typeof window.ethereum == 'undefined') {
+          connectWallet.innerText = 'MetaMask isnt installed, please install it'
+          connectWallet.classList.remove()
+          connectWallet.classList.add()
+          return false
+        }
+        connectWallet.addEventListener('click', connectWalletwithMetaMask)
+
+      }
+
+      async function connectWalletwithMetaMask() {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        .catch((e) => {
+        console.error(e.message)
+        return
+        })
+
+        if (!accounts) { return }
+
+        window.userWalletAddress = accounts[0]
+        walletAddress.innerText = window.userWalletAddress
+
+        signoutloc.innerText = 'Sign Out'
+        connectWallet.removeEventListener('click', connectWalletwithMetaMask)
+        setTimeout(() => {
+            connectWallet.addEventListener('click', signOutOfMetaMask)
+        }, 200)
+
+      }
+
+
+      function signOutOfMetaMask() {
+        window.userwalletAddress = null
+        walletAddress.innerText = ''
+        connectWallet.innerText = 'Connect Wallet'
+
+        connectWallet.removeEventListener('click', signOutOfMetaMask)
+        setTimeout(() => {
+          connectWallet.addEventListener('click', connectWalletwithMetaMask)
+        }, 200  )
+      }
+
+
+      window.addEventListener('DOMContentLoaded', () => {
+        checkInstalled()
+      })
+
+</script>
+</body>
+</html>
